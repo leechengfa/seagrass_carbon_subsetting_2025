@@ -23,7 +23,7 @@ library(patchwork)
 
 This report documents the method for selecting samples for the carbon content measurement of the _Zostera noltii_ seagrass. This is part of a larger project, which includes:
 
-* [Exploring the relationship between seagrass reflectance and biomass](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/) by C. Benjamin Lee
+* [Exploring the relationship between seagrass reflectance and biomass](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/)
 * [Analysing the carbon content in _Zostera noltii_ seagrass](https://leechengfa.github.io/seagrass_carbon_2025/)
 
 All analyses were performed in R version 4.5.2 [@Rversion].
