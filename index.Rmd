@@ -21,16 +21,17 @@ library(ggpubr)
 library(patchwork)
 ```
 
-This report documents the method for selecting samples for the carbon content measurement of the _Zostera noltii_ seagrass. This includes information compiled from:
+This report documents the method for selecting samples for the carbon content measurement of the _Zostera noltii_ seagrass. This is part of a larger project, which includes:
 
 * [Exploring the relationship between seagrass reflectance and biomass](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/) by C. Benjamin Lee
+* [Analysing the carbon content in _Zostera noltii_ seagrass](https://leechengfa.github.io/seagrass_carbon_2025/)
 
 All analyses were performed in R version 4.5.2 [@Rversion].
 All work belong to the [REWRITE project](https://rewriteproject.eu/).
 
 # Study sites and planning of collection points
 
-Fieldwork was done in Cadiz, Aveiro and Bourgneuf Bay. These three sites have been covered in @davies2024.
+Fieldwork was done in [Cadiz](https://sigoiry.github.io/Coring_Carbon_Seagrasses/), [Aveiro](https://sigoiry.github.io/Spectra_Aveiro_2025/) and [Bourgneuf Bay](https://sigoiry.github.io/Fieldtrip_Rewrite_Sept2025/). These three sites have been covered in @davies2024.
 
 ## Cadiz Bay
 
@@ -188,7 +189,7 @@ knitr::kable(table.amtFieldBB,
 
 # Data selection
 
-For the year 2025, a total of `r sum(17, sum(table.amtFieldAV['Actual no. of field stations']), sum(table.amtFieldBB['Actual no. of field stations']))` field samples were collected across the three sites (Table \@ref(tab:amountFieldSamples)). In principle, it would be best to measure the carbon content of all the available biomass samples. However, not only does each sample consist a leaf and root sample, but also both the total carbon (TC) and inorganic carbon (IC) content needs to be measured to obtain the total organic carbon (TOC) content (see section \@ref(toc-measurement)). Thus, the actual amount of laboratory work is approximately quadrupled per station with a non-zero amount of seagrass biomass. To optimise the laboratory work to a more feasible load, 30 samples each were selected from the Aveiro and Bourgneuf Bay locations, while all 17 samples in Cadiz were kept. 
+For the year 2025, a total of `r sum(17, sum(table.amtFieldAV['Actual no. of field stations']), sum(table.amtFieldBB['Actual no. of field stations']))` field samples were collected across the three sites (Table \@ref(tab:amountFieldSamples)). In principle, it would be best to measure the carbon content of all the available biomass samples. However, not only does each sample consist a leaf and root sample, but also both the total carbon (TC) and inorganic carbon (IC) content needs to be measured to obtain the total organic carbon (TOC) content. Thus, the actual amount of laboratory work is approximately quadrupled per station with a non-zero amount of seagrass biomass. To optimise the laboratory work to a more feasible load, 30 samples each were selected from the Aveiro and Bourgneuf Bay locations, while all 17 samples in Cadiz were kept. 
 
 
 ```{r amountFieldSamples}
@@ -262,7 +263,7 @@ Figure \@ref(fig:selectionCB) shows the relationship between the leaf and root b
 #| error: false
 #| message: false
 #| warning: false
-#| fig.cap: Data exploration for the Cadiz Bay samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, based on the requirements outlined in section \@ref(toc-measurement). All plots establishes the general relationship between leaf and root biomass for (A) all stations, (B) bare and intermediate cover stations only, and (C) high cover stations only. The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
+#| fig.cap: Data exploration for the Cadiz Bay samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, as a minimum of 370 mg was thought to be required for the carbon measurement. All plots establishes the general relationship between leaf and root biomass for (A) all stations, (B) bare and intermediate cover stations only, and (C) high cover stations only. The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
 
 ## filtering points High_01, High_02 and High_03 as their values seemed anomalous
 csv.biomass.CB <- csv.biomass.CB %>%
@@ -371,7 +372,7 @@ The samples at Ria de Aveiro were selected based on the following factors:
 * Availability of _in situ_ hyperspectral measurements (n = `r sum(csv.biomass.AV$spectra)`)
 * Elimination of stations which have no seagrass biomass (n = `r nrow(filter(csv.biomass.AV, seagrassA + seagrassB == 0 | is.na(seagrassA) & is.na(seagrassB)))`)
 
-Of the stations with hyperspectral measurements, `r csv.biomass.AV %>% filter(seagrassA < recommended_minimum | seagrassB < recommended_minimum) %>% select(spectra) %>% sum()` have too little samples for the carbon measurement (more in section \@ref(toc-measurement)). They are:
+Of the stations with hyperspectral measurements, `r csv.biomass.AV %>% filter(seagrassA < recommended_minimum | seagrassB < recommended_minimum) %>% select(spectra) %>% sum()` have too little samples for the carbon measurement, which required a minimum of 70 mg for the total carbon content measurement and about 300 mg for the total inorganic carbon content measurement. They are:
 
 ```{r amountSmallFieldSamplesAV}
 #| echo: false
@@ -400,7 +401,7 @@ Altogther, this means that `r 30 - (sum(csv.biomass.AV$spectra) - nrow(filter(ta
 #| error: false
 #| message: false
 #| warning: false
-#| fig.cap: Data filtering for the Ria de Aveiro samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, based on the requirements outlined in section \@ref(toc-measurement). (A) establishes the general relationship between leaf and root biomass. (B) scores the non-zero stations based on the established criteria. (C) demonstrates that the filtered data's relationship between leaf and root biomass is somewhat preserved with its similar slope factor to A (represented by the blue dotted line). The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
+#| fig.cap: Data filtering for the Ria de Aveiro samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, which required 370 mg of dry weight. (A) establishes the general relationship between leaf and root biomass. (B) scores the non-zero stations based on the established criteria. (C) demonstrates that the filtered data's relationship between leaf and root biomass is somewhat preserved with its similar slope factor to A (represented by the blue dotted line). The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
 
 xmax <- 250
 ymax <- 200
@@ -556,7 +557,7 @@ The data was selected by adapting the same criteria from section \@ref(dataselec
 * Elimination of stations which have no seagrass biomass (n = `r nrow(filter(csv.biomass.BB, A + B == 0 | is.na(A) & is.na(B)))`)
 * Elimination of a station which root sample was lost during the sorting process (n = `r nrow(filter(csv.biomass.BB, A > 0 & is.na(B)))`)
 
-Of the stations with hyperspectral measurements, `r csv.biomass.BB %>% filter(A < recommended_minimum | B < recommended_minimum) %>% select(spectra) %>% sum()` stations have too little samples for the carbon measurement (more in section \@ref(toc-measurement)). They are:
+Of the stations with hyperspectral measurements, `r csv.biomass.BB %>% filter(A < recommended_minimum | B < recommended_minimum) %>% select(spectra) %>% sum()` stations have too little samples for the carbon measurement. They are:
 
 ```{r amountSmallFieldSamplesBB}
 #| echo: false
@@ -587,7 +588,7 @@ Therefore, `r 30 - (sum(csv.biomass.BB$spectra) - 4)` more stations can be measu
 #| error: false
 #| message: false
 #| warning: false
-#| fig.cap: Data filtering for the Bourgneuf Bay samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, based on the requirements outlined in section \@ref(toc-measurement). (A) establishes the general relationship between leaf and root biomass. (B) scores the non-zero stations based on the established criteria. (C) shows the change in the relationship between leaf and root biomass between the original data (represented by the blue dotted line) and the filtered data. The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
+#| fig.cap: Data filtering for the Bourgneuf Bay samples. The light blue rectangle denotes that the station has insufficient biomass for the carbon measurement, which required 370 mg of dry weight. (A) establishes the general relationship between leaf and root biomass. (B) scores the non-zero stations based on the established criteria. (C) shows the change in the relationship between leaf and root biomass between the original data (represented by the blue dotted line) and the filtered data. The black dotted line represents the overall linear relationship between leaf and root biomass across all three locations, calculated [here](https://leechengfa.github.io/Seagrass_reflectance_biomass_2025.github.io/).
 
 ## establishing a local linear relationship between leaf (AGB) and root (BGB)
 plt.leaf_root <- ggplot(csv.biomass.BB, aes(x = A, y = B)) +
